@@ -316,7 +316,9 @@ if len(sys.argv) > 1 :
 	filepath = sys.argv[1]
 else :
 	# filepath = "/tmp"
-	filepath = "."
+	filepath = os.getenv("HOME")
+	print("filepath = ", filepath)
+	# ~ : Home
 
 instanceTest = TestGeosNetcdfIcareReader()
 
