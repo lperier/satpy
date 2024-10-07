@@ -20,6 +20,8 @@
 	satpy/readers/geos_netcdficare.py.
 
 python .../site-packages/satpy/tests/reader_tests/test_geos_netcdfcare.py /tmp
+python .../site-packages/satpy/tests/reader_tests/test_geos_netcdfcare.py .
+python .../site-packages/satpy/tests/reader_tests/test_geos_netcdfcare.py
 
 '/tmp' is a location for a tempory file written during the test.
 
@@ -141,7 +143,8 @@ class TestGeosNetcdfIcareReader() :
 
 	def buildNetcdf(self, ncName) :
 		"""
-		ncName : /tmp/Mmultic3kmNC4_msg03_202406281000.nc
+		ncName : /tmp/Mmultic3kmNC4_msg03_202406281000.nc 
+		or ./Mmultic3kmNC4_msg03_202406281000.nc
 		A dummy icare Meteo France netcdf is built here.	
 		"""
 		ncfileOut = Dataset(
@@ -255,9 +258,10 @@ class TestGeosNetcdfIcareReader() :
 		ncfileOut.close
 		# buildNetcdf()
 
-	def init(self, netcdfName) :
+	def init(self, netcdfName, filepath) :
 		"""
-		netcdfName : Mmultic3kmNC4_msg03_202406281000.nc
+		netcdfName : /tmp/Mmultic3kmNC4_msg03_202406281000.nc or ./Mmultic3kmNC4_msg03_202406281000.nc
+		filepath : /tmp or .
 		A scene is built with the reader to be tested, applied to this netcdf.
 		"""
 
@@ -278,7 +282,7 @@ class TestGeosNetcdfIcareReader() :
 		# {'MSG3km': [<NETCDF_ICARE: '/tmp/Mmultic3kmNC4_msg03_202406281000.nc'>]}
 
 		myfiles = find_files_and_readers(
-			base_dir="/tmp/", start_time=datetime(2024, 6, 28, 10, 0),
+			base_dir=filepath, start_time=datetime(2024, 6, 28, 10, 0),
 			end_time=datetime(2024, 6, 28, 10, 0), reader=self.yaml_file)
 		print("Found myfiles = ", myfiles)
 		# {'msg_netcdficare': ['/tmp/Mmultic3kmNC4_msg03_202406281000.nc']}
@@ -311,7 +315,8 @@ class TestGeosNetcdfIcareReader() :
 if len(sys.argv) > 1 :
 	filepath = sys.argv[1]
 else :
-	filepath = "/tmp"
+	# filepath = "/tmp"
+	filepath = "."
 
 instanceTest = TestGeosNetcdfIcareReader()
 
@@ -321,7 +326,7 @@ netcdfName = filepath + "/Mmultic3kmNC4_msg03_202406281000.nc"
 instanceTest.buildNetcdf(netcdfName)
 
 # The reader will decode the dummy file netcdfName. A scene is built.
-instanceTest.init(netcdfName)
+instanceTest.init(netcdfName, filepath)
 
 # We check that the parameters written in the dummy netcdf can be read.
 instanceTest.testStartEndTime("2024-06-28T10:00:09", "2024-06-28T10:12:41")
