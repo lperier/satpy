@@ -122,8 +122,8 @@ class TestGeosNetcdfIcareReader() :
 		assert resolution == self.expectedResolution
 
 		# A picture of convection composite will be displayed.
-		self.scn.show("convection")
-		print("The picture should be pink.")
+		# self.scn.show("convection")
+		# print("The picture should be pink.")
 		# test_geos_netcdficare(self, tmp_path)
 
 	def init(self, tmp_path) :
